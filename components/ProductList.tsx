@@ -34,7 +34,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {filteredProducts.map((product) => (
-                    <div key={product.id} className="border rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
+                    <div key={product.id} className="border border-gray-200 shadow-md rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
                         <div className='flex justify-center items-center h-64'>
                             <ProductImage product={product} width={200} height={200}></ProductImage>
                         </div>
