@@ -24,3 +24,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.cart-badge {
+  @apply absolute font-bold text-orange-600 ml-0 mt-0 text-center w-4;
+}
