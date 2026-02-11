@@ -26,7 +26,7 @@ export default function CheckoutPage() {
 
     // Dados fictícios que viriam do seu contexto de carrinho/auth
     const orderData = {
-        userId: user?.nameid + "erro",
+        userId: user?.nameid,
         orderProducts: cart.map(item => ({
             productId: item.id,
             quantity: item.quantity
@@ -49,24 +49,12 @@ export default function CheckoutPage() {
             });
 
             if (!response.ok) {
-                const errorRaw = await response.text();
-                let errorMessage = 'Falha ao processar o pedido';
+                const errorData = await response.json().catch(() => ({}));
+                showErrorAlert("Houve um erro ao confirmar seu pedido. Tente novamente.");
+                console.log(errorData);
 
-                try {
-                    const errorJson = JSON.parse(errorRaw);
-                    // O ASP.NET costuma colocar erros em 'errors' ou 'title'
-                    errorMessage = errorJson.message || errorJson.title || JSON.stringify(errorJson.errors) || errorRaw;
-                } catch {
-                    errorMessage = errorRaw;
-                }
-
-                console.log("--- DEBUG CLARO ---");
-                console.log("Status:", response.status);
-                console.log("Mensagem Extraída:", errorMessage);
-                console.log("Corpo Bruto:", errorRaw);
-                console.log("-------------------");
-
-                throw new Error(errorMessage);
+                // ✅ Retorne um objeto, não lance erro
+                return;
             }
 
             const result = await response.json();
@@ -75,8 +63,14 @@ export default function CheckoutPage() {
             window.location.href = '/checkout/success?id=' + result.orderId;
 
         } catch (error) {
-            console.error("Erro no checkout:", error);
-            showErrorAlert("Houve um erro ao confirmar seu pedido. Tente novamente.");
+            console.error('Erro inesperado:', error);
+
+            return {
+                success: false,
+                error: 'Erro de conexão. Tente novamente.',
+                isNetworkError: true
+            };
+
         } finally {
             setIsPending(false);
         }
