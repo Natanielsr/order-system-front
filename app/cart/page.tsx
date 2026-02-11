@@ -46,10 +46,6 @@ export default function Cart() {
                             <span>Itens:</span>
                             <span>{formatCurrency(total)}</span>
                         </div>
-                        <div className="flex justify-between">
-                            <span>Frete e manuseio:</span>
-                            <span>R$ 0,00</span>
-                        </div>
                     </div>
 
                     <hr className="my-3 border-gray-200" />
