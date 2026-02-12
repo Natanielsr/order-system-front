@@ -1,0 +1,129 @@
+"use client";
+
+import { useAuth } from "@/context/AuthContext";
+import { formatDateBR } from "@/utils/format";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+type Order = {
+    id: number;
+    creationDate: string;
+    total: number;
+    status: "Pendente" | "Enviado" | "Entregue" | "Cancelado";
+};
+
+
+function getStatusColor(status: Order["status"]) {
+    switch (status) {
+        case "Entregue":
+            return "bg-green-100 text-green-700";
+        case "Enviado":
+            return "bg-blue-100 text-blue-700";
+        case "Pendente":
+            return "bg-yellow-100 text-yellow-700";
+        case "Cancelado":
+            return "bg-red-100 text-red-700";
+    }
+}
+
+export default function OrdersPage() {
+
+    const { loading: authLoading } = useAuth();
+
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        const fetchOrders = async () => {
+            try {
+                const token = localStorage.getItem("user_token");
+
+                const response = await fetch("http://localhost:5012/api/order", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) {
+                    console.error(response);
+                    throw new Error("Erro ao buscar pedidos");
+                }
+
+                const data = await response.json();
+                console.log(data);
+                setOrders(data);
+            } catch (err: any) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (!authLoading) {
+            fetchOrders();
+        }
+    }, [authLoading]);
+
+    if (loading) {
+        return <div className="p-6">Carregando pedidos...</div>;
+    }
+
+    if (error) {
+        return <div className="p-6 text-red-600">{error}</div>;
+    }
+
+
+    return (
+        <div className="max-w-4xl mx-auto p-6">
+            <h1 className="text-2xl font-bold mb-6">Meus Pedidos</h1>
+
+            <div className="space-y-4">
+                {orders.map((order) => (
+                    <div
+                        key={order.id}
+                        className="bg-white rounded-xl shadow-md p-5 border hover:shadow-lg transition-shadow"
+                    >
+                        <div className="flex justify-between items-center mb-3">
+                            <div>
+                                <p className="text-sm text-gray-500">
+                                    Pedido #{order.id}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                    Data: {formatDateBR(order.creationDate)}
+                                </p>
+                            </div>
+
+                            <span
+                                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                                    order.status
+                                )}`}
+                            >
+                                {order.status}
+                            </span>
+                        </div>
+
+                        <div className="flex justify-between items-center">
+                            <p className="font-semibold text-lg">
+                                R$ {order.total.toFixed(2)}
+                            </p>
+
+                            <Link
+                                href={`/order/${order.id}`}
+                                className="text-sm text-blue-600 hover:underline"
+                            >
+                                Ver detalhes
+                            </Link>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {orders.length === 0 && (
+                <div className="text-center text-gray-500 mt-10">
+                    Você ainda não possui pedidos.
+                </div>
+            )}
+        </div>
+    );
+}
