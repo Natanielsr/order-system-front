@@ -12,6 +12,9 @@ export interface CartContextData {
     totalItens: number;
     increaseItem: (id: string) => void;
     decreaseItem: (id: string) => void;
+    isOpen: boolean;
+    openCart: () => void;
+    closeCart: () => void;
 }
 
 
