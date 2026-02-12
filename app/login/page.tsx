@@ -59,7 +59,9 @@ export default function LoginPage() {
                 if (response.status)
                     console.log("ERRO STATUS:", response.status);
                 console.log("ERRO MSG:", errorData);
-                throw new Error(errorData.message || "E-mail ou Senha Inválidos!");
+                showLoginErrorAlert("E-mail ou Senha Inválidos!");
+                setError(errorData.message);
+                return;
             }
 
             const data = await response.json();
@@ -72,7 +74,8 @@ export default function LoginPage() {
 
         } catch (err: any) {
             setError(err.message);
-            showLoginErrorAlert(err.message);
+            showLoginErrorAlert("Não foi possível se conectar ao servidor!");
+            console.error(err.message);
 
         } finally {
             setLoading(false);
