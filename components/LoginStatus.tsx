@@ -5,6 +5,7 @@ import { LogInIcon, LogOut } from "lucide-react";
 import Link from "next/link";
 import router from "next/router";
 import { useEffect } from "react";
+import UserDropdown from "./UserDropdown";
 
 export default function LoginStatus() {
     const { user, isAuthenticated, loading, logout } = useAuth();
@@ -17,21 +18,9 @@ export default function LoginStatus() {
 
     return <div className="flex">
         {isAuthenticated ? (
-            <>
-                <div className="flex items-center">
-                    <span className="text-sm mr-2">
-                        Olá, {user?.unique_name}
-                    </span>
-                </div>
-
-
-                <button
-                    onClick={logout}
-                    className='flex items-center gap-2 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg transition-colors mr-2'>
-                    <LogOut size={16} />
-                    Sair
-                </button>
-            </>
+            <div className="flex items-center justify-center mr-2">
+                <UserDropdown username={user?.unique_name ?? ""} />
+            </div>
         ) : (
             <Link href="/login">
                 <button
