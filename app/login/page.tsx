@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SimpleAlert from '@/components/SimpleAlert';
+import { useAuth } from '@/context/AuthContext';
 
 export default function LoginPage() {
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' as 'success' | 'error' });
@@ -11,6 +12,8 @@ export default function LoginPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+
+    const { login } = useAuth();
 
     const showLoginErrorAlert = (message: string) => {
         setAlert({ show: true, message: message, type: 'error' });
@@ -67,7 +70,7 @@ export default function LoginPage() {
             const data = await response.json();
 
             // 1. Salvar o Token (Exemplo no LocalStorage ou Cookie)
-            localStorage.setItem('user_token', data.token);
+            login(data.token);
 
             // 2. Redirecionar para o Checkout ou Home
             router.push('/checkout');
