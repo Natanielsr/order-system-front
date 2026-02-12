@@ -5,7 +5,7 @@ import Button from "./Button";
 import ProductImage from "./ProductImage";
 
 export default function CartSidebar() {
-    const { cart, addToCart, removeFromCart, total } = useCart();
+    const { cart, addToCart, removeFromCart, total, isOpen, closeCart } = useCart();
 
     return (
         <div className="fixed top-12 right-0 w-32 h-[calc(100vh-48px)] shadow-lg border-l border-gray-200 bg-white flex flex-col">
