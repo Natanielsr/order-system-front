@@ -3,11 +3,8 @@ import { LogIn, LogInIcon, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import Button from './Button';
 
-interface HeaderProps {
-    onToggle: () => void;
-}
 
-export default function Header({ onToggle }: HeaderProps) {
+export default function Header() {
 
     const { totalItens } = useCart();
 
@@ -26,13 +23,14 @@ export default function Header({ onToggle }: HeaderProps) {
                         </button>
                     </Link>
 
-                    <button
-                        onClick={onToggle}
-                        className='cursor-pointer flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors'>
-                        <ShoppingCart></ShoppingCart>
-                        <span>Carrinho</span>
-                        <span className=''>{totalItens}</span>
-                    </button>
+                    <Link href="/cart">
+                        <button
+                            className='cursor-pointer flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors'>
+                            <ShoppingCart></ShoppingCart>
+                            <span>Carrinho</span>
+                            <span className=''>{totalItens}</span>
+                        </button>
+                    </Link>
 
                 </div>
             </nav>
