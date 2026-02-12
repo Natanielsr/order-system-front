@@ -3,23 +3,25 @@
 import { useState } from "react";
 import CartSidebar from "./CartSidebar"
 import Header from "./Header"
+import React from "react";
+import { useCart } from "@/context/CartContext";
 
 type AppProps = {
     children: React.ReactNode;
 };
 
 export default function App({ children }: AppProps) {
-    const [hasCart, setHasCart] = useState(false);
-
-    const toggleCart = () => setHasCart(!hasCart);
+    const { isOpen } = useCart();
 
     return (
         <div>
-            <div className={hasCart ? "mr-32 mt-12" : "mr-0 mt-12"}>
-                <Header onToggle={toggleCart} />
-                <main className="p-4">{children}</main>
+            <div className={isOpen ? "mr-32 mt-12" : "mr-0 mt-12"}>
+                <Header />
+                <main className="p-4">
+                    {children}
+                </main>
             </div>
-            {hasCart ? <CartSidebar /> : <></>}
+            {isOpen ? <CartSidebar /> : <></>}
 
         </div>
     )
