@@ -35,13 +35,14 @@ export default function ProductList({ initialProducts }: ProductListProps) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {filteredProducts.map((product) => (
+                {filteredProducts.map((product: Product) => (
                     <div key={product.id} className="border border-gray-200 shadow-md rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
                         <div className='flex justify-center items-center h-64'>
                             <ProductImage product={product} width={200} height={200}></ProductImage>
                         </div>
                         <h3 className="font-bold text-gray-800">{product.name}</h3>
                         <p className="text-blue-600 font-bold">R$ {product.price.toFixed(2)}</p>
+                        <div><label className='font-bold'>Disponível:</label><span className='ml-2'>{product.availableQuantity}</span></div>
                         <button
                             onClick={() => {
                                 addToCart(product);
