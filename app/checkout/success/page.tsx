@@ -50,7 +50,7 @@ export default function SuccessPage() {
                     </button>
 
                     <button
-                        onClick={() => router.push('/minha-conta')}
+                        onClick={() => router.push('/orders')}
                         className="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2"
                     >
                         Acompanhar Pedido
