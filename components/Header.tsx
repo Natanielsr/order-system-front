@@ -1,8 +1,8 @@
 import { useCart } from '@/context/CartContext';
-import { LogIn, LogInIcon, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import Button from './Button';
-
+import LoginStatus from './LoginStatus';
 
 export default function Header() {
 
@@ -15,14 +15,8 @@ export default function Header() {
                     <Button>Lojinha.com</Button>
                 </Link>
                 <div className='flex'>
-                    <Link href="/login">
-                        <button
-                            className='mr-2 cursor-pointer flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors'>
-                            <LogInIcon></LogInIcon>
-                            <span>Login</span>
-                        </button>
-                    </Link>
 
+                    <LoginStatus></LoginStatus>
                     <Link href="/cart">
                         <button
                             className='cursor-pointer flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors'>
