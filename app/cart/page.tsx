@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 
 export default function Cart() {
-    const { cart, removeFromCart, total, increaseItem, decreaseItem, closeCart } = useCart();
+    const { cart, removeFromCart, total, increaseItem, decreaseItem, closeCart, totalItens } = useCart();
 
     useEffect(() => {
         closeCart();
@@ -36,12 +36,22 @@ export default function Cart() {
             <div className="lg:col-span-1">
                 <div className="border border-gray-200 rounded-lg p-5 sticky top-4">
 
-                    <Link href="/checkout">
+                    {totalItens > 0 ? (
+                        <Link href="/checkout">
+                            <button
+                                className="w-full rounded-lg py-2 text-sm shadow-sm font-medium bg-[#FFD814] hover:bg-[#F7CA00] border-[#FCD200] text-gray-900"
+                            >
+                                Fechar Pedido
+                            </button>
+                        </Link>
+                    ) : (
                         <button
-                            className="cursor-pointer w-full rounded-lg py-2 text-sm shadow-sm font-medium transition-colors bg-[#FFD814] hover:bg-[#F7CA00] border-[#FCD200] text-gray-900">
+                            disabled
+                            className="w-full rounded-lg py-2 text-sm shadow-sm font-medium bg-gray-300 text-gray-500 cursor-not-allowed"
+                        >
                             Fechar Pedido
                         </button>
-                    </Link>
+                    )}
 
                     <hr className="my-4 border-gray-200" />
 
