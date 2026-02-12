@@ -5,13 +5,13 @@ import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/utils/format';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
 import ProductImage from '@/components/ProductImage';
 import SimpleAlert from '@/components/SimpleAlert';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
 export default function CheckoutPage() {
-    const { cart, total } = useCart();
+    const { cart, total, totalItens } = useCart();
     const [isPending, setIsPending] = useState(false);
     const { user, isAuthenticated, loading } = useAuth();
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' as 'success' | 'error' });
@@ -25,6 +25,12 @@ export default function CheckoutPage() {
         if (!loading && !isAuthenticated) {
             router.push("/login");
         }
+
+        if (totalItens <= 0) {
+            router.push("/");
+        }
+
+
     }, [loading, isAuthenticated, router]);
 
     cart.map(i => i.id);
