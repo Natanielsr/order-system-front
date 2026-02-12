@@ -4,14 +4,14 @@ import { Lock, ChevronRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/utils/format';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { UserClaims } from '@/types/auth';
+import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ProductImage from '@/components/ProductImage';
 import SimpleAlert from '@/components/SimpleAlert';
+import { redirect } from 'next/navigation';
 
 export default function CheckoutPage() {
-    const { cart, addToCart, removeFromCart, total, increaseItem, decreaseItem } = useCart();
+    const { cart, total } = useCart();
     const [isPending, setIsPending] = useState(false);
     const { user, isAuthenticated } = useAuth();
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' as 'success' | 'error' });
@@ -20,7 +20,9 @@ export default function CheckoutPage() {
         setAlert({ show: true, message: message, type: 'error' });
     };
 
-    if (!isAuthenticated) return <p>Carregando...</p>;
+    if (!isAuthenticated) {
+        redirect("/login");
+    }
 
     cart.map(i => i.id);
 
