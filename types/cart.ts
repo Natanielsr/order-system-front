@@ -15,6 +15,7 @@ export interface CartContextData {
     isOpen: boolean;
     openCart: () => void;
     closeCart: () => void;
+    clearCart: () => void;
 }
 
 
