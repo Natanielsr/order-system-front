@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 export default function CheckoutPage() {
-    const { cart, total, totalItens, closeCart } = useCart();
+    const { cart, total, totalItens, closeCart, clearCart } = useCart();
     const [isPending, setIsPending] = useState(false);
     const { user, isAuthenticated, loading } = useAuth();
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' as 'success' | 'error' });
@@ -72,6 +72,7 @@ export default function CheckoutPage() {
             const result = await response.json();
 
             // Sucesso: Redirecionar para página de confirmação
+            clearCart();
             window.location.href = '/checkout/success?id=' + result.orderId;
 
         } catch (error) {
