@@ -1,13 +1,18 @@
 // context/CartContext.tsx
 "use client";
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { Product, CartItem, CartContextData } from "../types/cart";
+import { CartItem, CartContextData } from "../types/cart";
+import { Product } from "@/types/product";
 
 const CartContext = createContext<CartContextData | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
     const [cart, setCart] = useState<CartItem[]>([]);
     const [totalItens, setTotalItens] = useState<number>(0);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const openCart = () => setIsOpen(true);
+    const closeCart = () => setIsOpen(false);
 
     // 1. CARREGAR os dados ao iniciar
     useEffect(() => {
@@ -46,7 +51,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         setTotalItens(totalItens + 1);
     };
 
-    const removeFromCart = (id: number) => {
+    const removeFromCart = (id: string) => {
         var item = cart.find(i => i.id == id);
         if (item != null)
             setTotalItens(totalItens - item?.quantity);
@@ -55,7 +60,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     };
 
-    const increaseItem = (id: number) => {
+    const increaseItem = (id: string) => {
         setCart(prevCart =>
             prevCart.map(item =>
                 item.id === id
@@ -66,7 +71,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     };
 
-    const decreaseItem = (id: number) => {
+    const decreaseItem = (id: string) => {
         setCart(prevCart =>
             prevCart.map(item =>
                 item.id === id
@@ -81,7 +86,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, total, totalItens, increaseItem, decreaseItem }}>
+        <CartContext.Provider value={{ cart, addToCart, removeFromCart, total, totalItens, increaseItem, decreaseItem, isOpen, openCart, closeCart }}>
             {children}
         </CartContext.Provider>
     );
