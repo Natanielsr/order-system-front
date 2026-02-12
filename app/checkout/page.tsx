@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
 export default function CheckoutPage() {
-    const { cart, total, totalItens } = useCart();
+    const { cart, total, totalItens, closeCart } = useCart();
     const [isPending, setIsPending] = useState(false);
     const { user, isAuthenticated, loading } = useAuth();
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' as 'success' | 'error' });
@@ -30,6 +30,7 @@ export default function CheckoutPage() {
             router.push("/");
         }
 
+        closeCart();
 
     }, [loading, isAuthenticated, router]);
 
@@ -90,17 +91,19 @@ export default function CheckoutPage() {
 
     return (
         <div className="min-h-screen bg-white">
-            <div>
-                {/* O TS sabe que 'user' tem 'username' e 'role' */}
-                <h1>Olá, {user?.unique_name}!</h1>
-                <p>Seu ID de usuário é: {user?.nameid}</p>
+            {user?.role === 'Admin' && (
+                <div className='bg-amber-300 p-2'>
+                    {/* O TS sabe que 'user' tem 'username' e 'role' */}
+                    <h1>Olá, {user?.unique_name}!</h1>
+                    <p>Seu ID de usuário é: {user?.nameid}</p>
 
-                {user?.role === 'admin' && (
+
                     <span className="bg-red-100 text-red-800 p-1 rounded text-xs">
                         Painel de Admin
                     </span>
-                )}
-            </div>
+
+                </div>
+            )}
 
             {/* Header Simplificado (Foco total na conversão) */}
             <header className="border-b border-gray-200 bg-gray-50 py-3">
