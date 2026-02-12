@@ -6,9 +6,14 @@ import { useCart } from "@/context/CartContext";
 import { formatCurrency } from "@/utils/format";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export default function Cart() {
-    const { cart, addToCart, removeFromCart, total, increaseItem, decreaseItem } = useCart();
+    const { cart, removeFromCart, total, increaseItem, decreaseItem, closeCart } = useCart();
+
+    useEffect(() => {
+        closeCart();
+    });
 
     return <div>
         <h1 className="font-bold mb-5">Carrinho</h1>
