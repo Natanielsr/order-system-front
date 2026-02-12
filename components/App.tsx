@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from "react";
 import CartSidebar from "./CartSidebar"
 import Header from "./Header"
 import React from "react";
@@ -15,13 +14,17 @@ export default function App({ children }: AppProps) {
 
     return (
         <div>
-            <div className={isOpen ? "mr-32 mt-12" : "mr-0 mt-12"}>
+            <div className={`${isOpen ? "md:mr-32" : "md:mr-0"} mt-12`}>
                 <Header />
                 <main className="p-4">
                     {children}
                 </main>
             </div>
-            {isOpen ? <CartSidebar /> : <></>}
+            {isOpen && (
+                <div className="hidden md:block">
+                    <CartSidebar />
+                </div>
+            )}
 
         </div>
     )
