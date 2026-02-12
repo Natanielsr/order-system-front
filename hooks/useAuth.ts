@@ -4,11 +4,19 @@ import { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import { UserClaims } from '@/types/auth';
 
+const TOKEN_KEY = "user_token"
+
 export function useAuth() {
     const [user, setUser] = useState<UserClaims | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const token = localStorage.getItem('user_token');
+        const token = localStorage.getItem(TOKEN_KEY);
+
+        if (!token) {
+            setLoading(false);
+            return;
+        }
 
         if (token) {
             try {
@@ -27,13 +35,14 @@ export function useAuth() {
                 handleLogout();
             }
         }
+        setLoading(false);
     }, []);
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
+        localStorage.removeItem(TOKEN_KEY);
         setUser(null);
         window.location.href = '/login';
     };
 
-    return { user, isAuthenticated: !!user, handleLogout };
+    return { user, isAuthenticated: !!user, loading, handleLogout };
 }
