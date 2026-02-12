@@ -18,9 +18,12 @@ export default function LoginStatus() {
     return <div className="flex">
         {isAuthenticated ? (
             <>
-                <span className="text-sm mr-2">
-                    Olá, {user?.unique_name}
-                </span>
+                <div className="flex items-center">
+                    <span className="text-sm mr-2">
+                        Olá, {user?.unique_name}
+                    </span>
+                </div>
+
 
                 <button
                     onClick={logout}
