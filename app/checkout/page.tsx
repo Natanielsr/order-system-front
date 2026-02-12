@@ -4,25 +4,28 @@ import { Lock, ChevronRight } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/utils/format';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ProductImage from '@/components/ProductImage';
 import SimpleAlert from '@/components/SimpleAlert';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function CheckoutPage() {
     const { cart, total } = useCart();
     const [isPending, setIsPending] = useState(false);
-    const { user, isAuthenticated } = useAuth();
+    const { user, isAuthenticated, loading } = useAuth();
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' as 'success' | 'error' });
+    const router = useRouter();
 
     const showErrorAlert = (message: string) => {
         setAlert({ show: true, message: message, type: 'error' });
     };
 
-    if (!isAuthenticated) {
-        redirect("/login");
-    }
+    useEffect(() => {
+        if (!loading && !isAuthenticated) {
+            router.push("/login");
+        }
+    }, [loading, isAuthenticated, router]);
 
     cart.map(i => i.id);
 
