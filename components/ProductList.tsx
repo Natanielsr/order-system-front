@@ -11,8 +11,10 @@ interface ProductListProps {
 }
 
 export default function ProductList({ initialProducts }: ProductListProps) {
+
     const [searchTerm, setSearchTerm] = useState("");
-    const { cart, addToCart, removeFromCart, total } = useCart();
+    const { addToCart, openCart } = useCart();
+
 
     // Lógica de filtro no cliente
     const filteredProducts = initialProducts.filter(p =>
@@ -43,7 +45,7 @@ export default function ProductList({ initialProducts }: ProductListProps) {
                         <button
                             onClick={() => {
                                 addToCart(product);
-                                alert(`Adicionado: ${product.name}`);
+                                openCart(); // 👈 abre o sidebar automaticamente
                             }}
                             className="w-full mt-4 bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600"
                         >
