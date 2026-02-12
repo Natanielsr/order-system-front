@@ -1,20 +1,12 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { LogInIcon, LogOut } from "lucide-react";
+import { LogInIcon } from "lucide-react";
 import Link from "next/link";
-import router from "next/router";
-import { useEffect } from "react";
 import UserDropdown from "./UserDropdown";
 
 export default function LoginStatus() {
-    const { user, isAuthenticated, loading, logout } = useAuth();
-
-    useEffect(() => {
-        if (!loading && !isAuthenticated) {
-            //router.push("/login");
-        }
-    }, [loading, isAuthenticated, router]);
+    const { user, isAuthenticated, loading } = useAuth();
 
     return <div className="flex">
         {isAuthenticated ? (
