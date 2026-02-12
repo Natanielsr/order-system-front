@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SimpleAlert from '@/components/SimpleAlert';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 
 export default function LoginPage() {
     const [alert, setAlert] = useState({ show: false, message: '', type: 'success' as 'success' | 'error' });
@@ -12,6 +13,11 @@ export default function LoginPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const { closeCart } = useCart();
+
+    useEffect(() => {
+        closeCart();
+    });
 
     const { login } = useAuth();
 
