@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { formatDateBR } from "@/utils/format";
+import { formatCurrency, formatDateBR } from "@/utils/format";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -28,7 +28,7 @@ function getStatusColor(status: Order["status"]) {
 
 export default function OrdersPage() {
 
-    const { loading: authLoading } = useAuth();
+    const { loading: authLoading, user } = useAuth();
 
     const [orders, setOrders] = useState<Order[]>([]);
     const [loading, setLoading] = useState(true);
@@ -39,7 +39,7 @@ export default function OrdersPage() {
             try {
                 const token = localStorage.getItem("user_token");
 
-                const response = await fetch("http://localhost:5012/api/order", {
+                const response = await fetch(`http://localhost:5012/api/order/getuserorders?userId=${user?.nameid}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -95,9 +95,10 @@ export default function OrdersPage() {
                             </div>
 
                             <span
-                                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                                className={`px - 3 py - 1 rounded - full text - xs font - medium ${getStatusColor(
                                     order.status
-                                )}`}
+                                )
+                                    }`}
                             >
                                 {order.status}
                             </span>
@@ -105,11 +106,11 @@ export default function OrdersPage() {
 
                         <div className="flex justify-between items-center">
                             <p className="font-semibold text-lg">
-                                R$ {order.total.toFixed(2)}
+                                {formatCurrency(order.total)}
                             </p>
 
                             <Link
-                                href={`/order/${order.id}`}
+                                href={`/ order / ${order.id} `}
                                 className="text-sm text-blue-600 hover:underline"
                             >
                                 Ver detalhes
