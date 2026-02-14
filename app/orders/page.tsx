@@ -110,7 +110,7 @@ export default function OrdersPage() {
                             </p>
 
                             <Link
-                                href={`/ order / ${order.id} `}
+                                href={`/order/${order.id}`}
                                 className="text-sm text-blue-600 hover:underline"
                             >
                                 Ver detalhes
